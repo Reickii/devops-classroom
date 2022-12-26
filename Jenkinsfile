@@ -20,7 +20,9 @@ pipeline {
         stage('push image to hub'){
             steps{
                 script{
-                    bat 'docker login -u reickii -p '
+                    withCredentials([string(credentialsId: 'password', variable: 'dockerpwd')]) {
+                        def password = env.dockerpwd
+                    bat "docker login -u reickii -p ${password}"}
                     bat 'docker push reickii/devops-integration'
                 }
             }
